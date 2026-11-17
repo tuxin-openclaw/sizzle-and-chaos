@@ -1,0 +1,172 @@
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/fredoka-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/fredoka-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/fredoka-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/fredoka-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink: #3b2a23;
+  --ink-soft: #634a3b;
+  --cream: #fff4de;
+  --paper: #fffbf0;
+  --paper-deep: #f7e7c8;
+  --red: #e85a45;
+  --red-dark: #a83a2c;
+  --teal: #2f817a;
+  --teal-dark: #1d5b57;
+  --gold: #f2c14e;
+  --green: #6fa845;
+  --blue: #3f8ce0;
+  --pink: #f2a7a0;
+  --shadow-hard: 0 4px 0 var(--ink);
+  --shadow-soft: 0 18px 40px rgba(59, 42, 35, 0.18);
+  --font: "Fredoka", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", system-ui, sans-serif;
+  color-scheme: light;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--cream);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: var(--cream);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body,
+button,
+input,
+textarea {
+  font-family: var(--font);
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 21px;
+  padding: 1px 5px;
+  border: 2px solid var(--ink);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 0.72em;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: 0 1px 0 rgba(59, 42, 35, 0.2);
+  vertical-align: middle;
+}
+
+.app {
+  position: relative;
+  min-height: 100svh;
+}
+
+.app.is-playing {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 42, 35, 0.35);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
