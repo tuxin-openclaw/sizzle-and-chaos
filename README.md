@@ -1,5 +1,7 @@
 # Sizzle & Chaos · 灶台大乱斗
 
+[![Deploy to GitHub Pages](https://github.com/tuxin-openclaw/sizzle-and-chaos/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/tuxin-openclaw/sizzle-and-chaos/actions/workflows/deploy-pages.yml)
+
 > 一款 Overcooked 风格的原创同屏厨房派对游戏。切菜、煎肉、装盘、出餐——在客人掀桌之前。
 >
 > **Three.js + React Three Fiber + Blender** · React 19 · TypeScript · Vite
