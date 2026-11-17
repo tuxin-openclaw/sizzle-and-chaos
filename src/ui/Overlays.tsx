@@ -348,6 +348,7 @@ export function HelpModal({ onClose }: { onClose: () => void }) {
               <li><ChefHatIcon size={24} /><span><b>切菜</b> 放到砧板上，<b>按住</b>动作键切碎。</span></li>
               <li><FlameIcon size={24} /><span><b>煎肉</b> 切好的肉饼下锅，煎好及时拿起。</span></li>
               <li><PlateIcon size={24} /><span><b>装盘</b> 把准备好的食材拿到装盘台按互动键放上盘子；也可以空手拿盘，再去砧板/锅里收集。</span></li>
+              <li><PlateIcon size={24} /><span><b>放回盘子</b> 端着盘子回到装盘台，按互动键可以放下；空盘和有食材的盘子都能暂存，方便腾出双手。</span></li>
               <li><CoinIcon size={24} /><span><b>出餐</b> 端起完整盘子到 ORDER UP 窗口送出。</span></li>
             </ol>
           </section>

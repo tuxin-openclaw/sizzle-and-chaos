@@ -789,7 +789,22 @@ export class GameEngine {
     const plate = station.plateContents;
 
     if (player.carry?.kind === "plate") {
-      this.showToast("装盘台上已经有一张盘子了，把食材拿过来就好", "info");
+      if (plate.length > 0) {
+        this.showToast("装盘台上已经有一盘食材了，先把那盘端走", "warn");
+        audio.play("error");
+        return;
+      }
+      const heldContents = player.carry.contents;
+      station.plateContents = [...heldContents];
+      player.carry = null;
+      audio.play("place");
+      this.showToast(
+        heldContents.length > 0
+          ? "盘子放在装盘台上了，随时可以拿回来"
+          : "空盘放回装盘台了，双手腾出来啦",
+        "info",
+      );
+      this.bump();
       return;
     }
 
@@ -833,7 +848,7 @@ export class GameEngine {
     if (plate.length === 0) {
       player.carry = { kind: "plate", contents: [] };
       audio.play("pickup");
-      this.showToast("拿了一个干净盘子，也可以把食材直接放到装盘台", "info");
+      this.showToast("拿了一个干净盘子；想腾出手可以放回装盘台", "info");
       this.bump();
       return;
     }
@@ -1194,7 +1209,16 @@ export class GameEngine {
       case "plating": {
         const plate = station.plateContents;
         if (carry?.kind === "plate") {
-          return { text: "装盘台上已经有一张盘子了", tone: "idle" };
+          if (plate.length > 0) {
+            return { text: "装盘台上已经有一盘食材了", tone: "no" };
+          }
+          return {
+            text:
+              carry.contents.length > 0
+                ? "把盘子放在装盘台上"
+                : "把空盘放回装盘台",
+            tone: "do",
+          };
         }
         const existingDish = matchRecipe(plate);
         if (carry?.kind === "ingredient" && existingDish) {
