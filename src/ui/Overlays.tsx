@@ -384,6 +384,7 @@ export function HelpModal({ onClose }: { onClose: () => void }) {
               <li>连续出餐会积累连击，最高 2 倍收益。</li>
               <li>切菜时要按着动作键；松开就会暂停，进度会保留。</li>
               <li><kbd>Esc</kbd> / <kbd>P</kbd> 暂停，<kbd>M</kbd> 静音（也有按钮）。</li>
+              <li>手机全屏：点右上角 ⛶；iPhone 可分享 → 添加到主屏幕，从图标启动即全屏。</li>
             </ul>
           </section>
         </div>
@@ -429,6 +430,74 @@ export function PortraitGate({ onQuit }: { onQuit: () => void }) {
         <button className="btn btn-paper" onClick={onQuit}>
           先回主菜单
         </button>
+      </div>
+    </div>
+  );
+}
+
+export function FullscreenTipModal({
+  ios,
+  onClose,
+}: {
+  ios: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <div className="modal-backdrop fullscreen-tip-backdrop" onClick={onClose}>
+      <div
+        className="paper-panel fullscreen-tip-panel"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button className="help-close" onClick={onClose} aria-label="关闭">
+          ×
+        </button>
+        <div className="panel-kicker">BIGGER KITCHEN</div>
+        <h2>{ios ? "iPhone 全屏开灶指南" : "把厨房铺满屏幕"}</h2>
+        <p className="panel-sub">
+          {ios
+            ? "Safari 不允许普通网页隐藏地址栏。把游戏添加到主屏幕后，从桌面图标打开，就会以全屏 App 的样子运行。"
+            : "当前浏览器没有允许网页进入全屏。可以试试最新版 Chrome / Edge，或者把游戏添加到主屏幕后从图标启动。"}
+        </p>
+        <div className="fullscreen-steps">
+          <div className="fullscreen-step">
+            <span>1</span>
+            <div>
+              <b>打开分享菜单</b>
+              <small>
+                {ios
+                  ? "在 Safari 底部（或顶部）点分享按钮。"
+                  : "打开浏览器右上角菜单，寻找「安装应用」或「添加到主屏幕」。"}
+              </small>
+            </div>
+            <i className="share-glyph">↑</i>
+          </div>
+          <div className="fullscreen-step">
+            <span>2</span>
+            <div>
+              <b>选择「添加到主屏幕」</b>
+              <small>名称保持「灶台大乱斗」或「Sizzle & Chaos」即可。</small>
+            </div>
+          </div>
+          <div className="fullscreen-step">
+            <span>3</span>
+            <div>
+              <b>从主屏幕图标启动</b>
+              <small>不会再有地址栏，配合横屏就是完整厨房视野。</small>
+            </div>
+          </div>
+        </div>
+        <div className="fullscreen-note">
+          <span className="fullscreen-note-icon">⛶</span>
+          <span>
+            游戏开始时会自动尝试全屏；游戏内右上角的 ⛶ 按钮也可以随时切换。
+            iPhone 需要从主屏幕启动才会真正全屏。
+          </span>
+        </div>
+        <div className="panel-actions">
+          <button className="btn btn-primary" onClick={onClose}>
+            知道了
+          </button>
+        </div>
       </div>
     </div>
   );

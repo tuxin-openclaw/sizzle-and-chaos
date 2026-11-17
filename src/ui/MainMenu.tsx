@@ -2,12 +2,14 @@ import { useState, type CSSProperties } from "react";
 import heroChef from "../assets/hero-chef-trimmed.png";
 import { LEVELS, RECIPES } from "../game/data";
 import { loadBestBook } from "../game/progress";
+import { isIOS, isStandaloneDisplay } from "../game/useFullscreen";
 import {
   ArrowIcon,
   ChefHatIcon,
   ClockIcon,
   CoinIcon,
   FlameIcon,
+  FullscreenIcon,
   IngredientIcon,
   PlateIcon,
   SoundIcon,
@@ -19,11 +21,17 @@ export function MainMenu({
   onToggleMute,
   onStart,
   onHelp,
+  onFullscreen,
+  fullscreenActive,
+  showFullscreen,
 }: {
   muted: boolean;
   onToggleMute: () => void;
   onStart: (levelId: string, playerCount: 1 | 2) => void;
   onHelp: () => void;
+  onFullscreen: () => void;
+  fullscreenActive: boolean;
+  showFullscreen: boolean;
 }) {
   const [mode, setMode] = useState<1 | 2>(1);
   const [selected, setSelected] = useState(LEVELS[0].id);
@@ -44,6 +52,16 @@ export function MainMenu({
           <button className="btn btn-ghost btn-small" onClick={onHelp}>
             厨房手册
           </button>
+          {showFullscreen ? (
+            <button
+              className="icon-btn"
+              onClick={onFullscreen}
+              aria-label={fullscreenActive ? "退出全屏" : "进入全屏"}
+              title={fullscreenActive ? "退出全屏" : "进入全屏"}
+            >
+              <FullscreenIcon active={fullscreenActive} />
+            </button>
+          ) : null}
           <button
             className="icon-btn"
             onClick={onToggleMute}
@@ -100,6 +118,11 @@ export function MainMenu({
               <span className="mode-check" />
             </button>
           </div>
+          {isIOS() && !isStandaloneDisplay() ? (
+            <button className="menu-ios-hint" onClick={onFullscreen}>
+              ⛶ iPhone 全屏：分享 → 添加到主屏幕，或点这里看步骤
+            </button>
+          ) : null}
 
           <div className="level-heading">
             <span>选择今晚的厨房</span>
@@ -197,7 +220,7 @@ export function MainMenu({
                 <PlateIcon size={22} />
                 做出客人点的菜
               </span>
-            </div>
+              </div>
           </div>
         </section>
 

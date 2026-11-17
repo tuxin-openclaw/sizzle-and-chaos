@@ -3132,3 +3132,188 @@
     font-size: 0.58rem;
   }
 }
+
+/* ====================================================== fullscreen support */
+
+.fullscreen-tip-panel {
+  width: min(590px, 100%);
+}
+
+.fullscreen-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.fullscreen-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border: 2px solid var(--ink);
+  border-radius: 11px;
+  background: rgba(247, 231, 200, 0.34);
+}
+
+.fullscreen-step > span {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--paper);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.fullscreen-step > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.fullscreen-step b {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.fullscreen-step small {
+  color: var(--ink-soft);
+  font-size: 0.63rem;
+  line-height: 1.45;
+}
+
+.share-glyph {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  margin-left: auto;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1.1rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.fullscreen-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: #fff0c8;
+  color: var(--ink-soft);
+  font-size: 0.65rem;
+  line-height: 1.55;
+}
+
+.fullscreen-note-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* safe areas when installed as a fullscreen PWA / notch devices */
+@supports (padding: env(safe-area-inset-top)) {
+  .menu-screen {
+    padding-top: max(13px, env(safe-area-inset-top));
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+  .hud {
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .mode-row,
+  .level-picker {
+    scroll-margin-top: env(safe-area-inset-top);
+  }
+}
+
+@media (pointer: coarse) {
+  .menu-topbar {
+    padding-top: 2px;
+  }
+  .fullscreen-tip-panel {
+    max-height: calc(100svh - 20px);
+  }
+}
+
+.menu-ios-hint {
+  align-self: flex-start;
+  margin-top: 7px;
+  padding: 4px 8px;
+  border: 1.5px dashed rgba(59, 42, 35, 0.28);
+  border-radius: 7px;
+  background: rgba(255, 251, 240, 0.72);
+  color: var(--teal-dark);
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (max-height: 540px) {
+  .fullscreen-tip-panel {
+    padding: 14px 18px;
+    max-height: calc(100svh - 16px);
+  }
+  .fullscreen-tip-panel h2 {
+    font-size: 1.35rem;
+  }
+  .fullscreen-tip-panel .panel-sub {
+    margin-top: 3px;
+    font-size: 0.68rem;
+    line-height: 1.42;
+  }
+  .fullscreen-steps {
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .fullscreen-step {
+    padding: 5px 8px;
+  }
+  .fullscreen-step > span {
+    width: 23px;
+    height: 23px;
+    font-size: 0.6rem;
+  }
+  .fullscreen-step b {
+    font-size: 0.7rem;
+  }
+  .fullscreen-step small {
+    font-size: 0.56rem;
+  }
+  .share-glyph {
+    width: 25px;
+    height: 25px;
+    font-size: 0.85rem;
+  }
+  .fullscreen-note {
+    display: none;
+  }
+  .fullscreen-tip-panel .panel-actions {
+    margin-top: 9px;
+  }
+  .fullscreen-tip-panel .panel-actions .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}

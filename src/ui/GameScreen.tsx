@@ -20,10 +20,16 @@ export function GameScreen({
   muted,
   onToggleMute,
   onQuit,
+  onFullscreen,
+  fullscreenActive,
+  showFullscreen,
 }: {
   muted: boolean;
   onToggleMute: () => void;
   onQuit: () => void;
+  onFullscreen: () => void;
+  fullscreenActive: boolean;
+  showFullscreen: boolean;
 }) {
   useKeyboardControls();
   const hud = useGameHud();
@@ -109,6 +115,9 @@ export function GameScreen({
         muted={muted}
         onPause={() => game.pause()}
         onToggleMute={onToggleMute}
+        onFullscreen={onFullscreen}
+        fullscreenActive={fullscreenActive}
+        showFullscreen={showFullscreen}
       />
       <CountdownOverlay hud={hud} />
       {!portrait ? (

@@ -216,3 +216,33 @@ export function ChefHatIcon({ size = 34 }: { size?: number }) {
     </svg>
   );
 }
+
+export function FullscreenIcon({
+  active = false,
+  size = 22,
+}: {
+  active?: boolean;
+  size?: number;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
+      <g
+        fill="none"
+        stroke={INK}
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {active ? (
+          <>
+            <path d="M13 5v8H5M19 5v8h8M13 27v-8H5M19 27v-8h8" />
+          </>
+        ) : (
+          <>
+            <path d="M5 12V5h7M27 12V5h-7M5 20v7h7M27 20v7h-7" />
+          </>
+        )}
+      </g>
+    </svg>
+  );
+}

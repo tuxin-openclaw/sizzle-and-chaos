@@ -4,6 +4,7 @@ import type { GameHud, PlayerHud } from "../game/engine";
 import {
   ClockIcon,
   CoinIcon,
+  FullscreenIcon,
   IngredientIcon,
   PauseIcon,
   PlateIcon,
@@ -94,11 +95,17 @@ export function HUD({
   muted,
   onPause,
   onToggleMute,
+  onFullscreen,
+  fullscreenActive,
+  showFullscreen,
 }: {
   hud: GameHud;
   muted: boolean;
   onPause: () => void;
   onToggleMute: () => void;
+  onFullscreen: () => void;
+  fullscreenActive: boolean;
+  showFullscreen: boolean;
 }) {
   const level = getLevel(hud.level.id);
   const railRef = useRef<HTMLDivElement>(null);
@@ -191,6 +198,16 @@ export function HUD({
             <span>{hud.score}</span>
           </div>
           <div className="hud-buttons">
+            {showFullscreen ? (
+              <button
+                className="icon-btn hud-btn"
+                onClick={onFullscreen}
+                aria-label={fullscreenActive ? "退出全屏" : "进入全屏"}
+                title={fullscreenActive ? "退出全屏" : "进入全屏"}
+              >
+                <FullscreenIcon active={fullscreenActive} />
+              </button>
+            ) : null}
             <button className="icon-btn hud-btn" onClick={onPause} aria-label="暂停">
               <PauseIcon />
             </button>

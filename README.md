@@ -17,6 +17,7 @@
 - **手工感的 3D 美术**：Blender 建模的低多边形厨师、食物与店铺道具；Three.js 实时灯光、阴影、蒸汽、火焰和粒子。
 - **纯程序化音频**：WebAudio 合成的餐馆摇摆乐与切菜/油锅/出餐音效，无外部音频文件。
 - **响应式与触屏**：移动端横屏会显示虚拟摇杆和互动按钮；竖屏会先提示旋转设备。
+- **全屏与 PWA**：手机开始游戏时自动尝试进入全屏，界面内也有全屏按钮；支持安装到主屏幕，安装后以全屏 App 模式启动。
 - **本地最佳成绩**：完成一局后自动把分数和星级存进 `localStorage`。
 
 | 厨房实战 | 午夜食堂 |
@@ -59,6 +60,12 @@ npm run preview
 - 单人模式下也可以用方向键移动 P1。
 - 触摸端：左下虚拟摇杆移动，右下圆形按钮互动；按住按钮切菜。
 - 建议使用桌面浏览器或移动端横屏；移动端竖屏会显示旋转提示。
+
+### 手机全屏
+
+- **Android Chrome / Edge**：开始游戏时会自动请求全屏并尝试锁定横屏；右上角的 ⛶ 按钮可以随时切换。
+- **iPhone / iPad**：Safari 不允许普通网页隐藏地址栏。请点 Safari 的「分享」→「添加到主屏幕」，再从主屏幕图标启动；这样会以独立全屏 App 运行。菜单和游戏内都有 iPhone 全屏指引入口。
+- 项目包含 `manifest.webmanifest`、应用图标和 Service Worker，可从 Chrome 菜单「安装应用 / 添加到主屏幕」安装，并在首次加载后获得离线缓存。
 
 ## 怎么玩
 
@@ -116,6 +123,9 @@ src/
     TouchControls.tsx# 移动端摇杆与互动按钮
 public/
   models/            # Blender 导出的 GLB（chef / food / stations / props）
+  icons/             # PWA / Apple Touch 图标
+  manifest.webmanifest
+  sw.js              # 生产环境 Service Worker（离线缓存）
 scripts/blender/
   build_assets.py    # 全量建模 + 导出 GLB
   render_hero.py     # 渲染菜单主视觉
@@ -156,6 +166,7 @@ npm run assets:hero
 - 触屏操作只控制 P1，适合单人移动端；双人仍推荐键盘。
 - 没有洗碗/脏盘子系统，盘子供应无限；这是为了保持单局节奏而做的简化。
 - 关卡全解锁，便于试玩；最佳成绩按关卡保存。
+- iOS Safari 无法通过网页 API 隐藏地址栏；iPhone 用户需要按上述步骤将它添加到主屏幕，才能获得真正的全屏体验。
 
 ## 版权与致谢
 
