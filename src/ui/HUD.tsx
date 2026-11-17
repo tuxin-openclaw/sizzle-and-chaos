@@ -196,6 +196,9 @@ export function HUD({
           <div className="stat-pill score-pill">
             <CoinIcon size={22} />
             <span>{hud.score}</span>
+            {hud.combo > 1 ? (
+              <span className="score-combo">×{hud.combo}</span>
+            ) : null}
           </div>
           <div className="hud-buttons">
             {showFullscreen ? (
@@ -212,7 +215,7 @@ export function HUD({
               <PauseIcon />
             </button>
             <button
-              className="icon-btn hud-btn"
+              className="icon-btn hud-btn hud-mute"
               onClick={onToggleMute}
               aria-label={muted ? "打开声音" : "关闭声音"}
             >
