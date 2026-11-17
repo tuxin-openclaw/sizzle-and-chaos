@@ -5,6 +5,7 @@ import {
   RECIPES,
   canAddToPlate,
   getLevel,
+  isPlateReady,
   matchRecipe,
 } from "./data";
 import { audio } from "./audio";
@@ -61,6 +62,7 @@ export interface StationState {
   progress: number;
   cookTimer: number;
   beingChopped: boolean;
+  plateContents: Ingredient[];
 }
 
 export interface Collider {
@@ -301,6 +303,7 @@ export class GameEngine {
         progress: 0,
         cookTimer: 0,
         beingChopped: false,
+        plateContents: [],
       };
     }
 
@@ -397,7 +400,7 @@ export class GameEngine {
         this.countdown = 0;
         this.orderTimer = this.level.orderEvery * 0.8;
         audio.play("go");
-        this.showToast("开灶！先看订单再动手", "info");
+        this.showToast("开灶！食材备好后拿到「装盘台」", "info");
         this.bump();
       }
       this.throttleHud(dt);
@@ -606,8 +609,8 @@ export class GameEngine {
       case "stove":
         this.useStove(player, station);
         break;
-      case "plate":
-        this.usePlate(player);
+      case "plating":
+        this.usePlating(player, station);
         break;
       case "serve":
         this.useServe(player);
@@ -782,14 +785,68 @@ export class GameEngine {
     this.showToast("还在煎，别急着翻锅", "info");
   }
 
-  private usePlate(player: PlayerState): void {
-    if (!player.carry) {
-      player.carry = { kind: "plate", contents: [] };
-      audio.play("pickup");
+  private usePlating(player: PlayerState, station: StationState): void {
+    const plate = station.plateContents;
+
+    if (player.carry?.kind === "plate") {
+      this.showToast("装盘台上已经有一张盘子了，把食材拿过来就好", "info");
+      return;
+    }
+
+    if (player.carry?.kind === "ingredient") {
+      const item = player.carry.item;
+      if (!isPlateReady(item)) {
+        this.showToast(
+          item.id === "meat"
+            ? "肉饼要先切好、煎熟才能装盘"
+            : "生食材要先切碎才能装盘",
+          "warn",
+        );
+        audio.play("error");
+        return;
+      }
+      const existingDish = matchRecipe(plate);
+      if (existingDish) {
+        this.showToast(`${existingDish.name}已经做好了，端起盘子去出餐口吧`, "warn");
+        audio.play("error");
+        return;
+      }
+      if (!canAddToPlate(plate, item)) {
+        this.showToast("这个盘子已经装不下它了", "warn");
+        audio.play("error");
+        return;
+      }
+      station.plateContents = [...plate, { ...item }];
+      player.carry = null;
+      const dish = matchRecipe(station.plateContents);
+      audio.play(dish ? "chopDone" : "place");
+      this.showToast(
+        dish
+          ? `${dish.name}装好了！按 E 端起盘子送去出餐口`
+          : "食材已放上盘子，继续加料吧",
+        dish ? "good" : "info",
+      );
       this.bump();
       return;
     }
-    this.showToast("手里已经有东西了", "info");
+
+    if (plate.length === 0) {
+      player.carry = { kind: "plate", contents: [] };
+      audio.play("pickup");
+      this.showToast("拿了一个干净盘子，也可以把食材直接放到装盘台", "info");
+      this.bump();
+      return;
+    }
+
+    const dish = matchRecipe(plate);
+    player.carry = { kind: "plate", contents: plate };
+    station.plateContents = [];
+    audio.play("pickup");
+    this.showToast(
+      dish ? `${dish.name}端稳了，去出餐口` : "把这盘食材端去补齐",
+      dish ? "good" : "info",
+    );
+    this.bump();
   }
 
   private useServe(player: PlayerState): void {
@@ -1134,10 +1191,37 @@ export class GameEngine {
         if (!carry) return { text: "拿起焦肉饼去扔掉", tone: "do" };
         return { text: "焦了，不能装盘", tone: "no" };
       }
-      case "plate": {
-        if (!carry) return { text: "拿一个干净盘子", tone: "do" };
-        if (carry.kind === "plate") return { text: "已经端着盘子啦", tone: "idle" };
-        return { text: "先把手中的食材放下", tone: "no" };
+      case "plating": {
+        const plate = station.plateContents;
+        if (carry?.kind === "plate") {
+          return { text: "装盘台上已经有一张盘子了", tone: "idle" };
+        }
+        const existingDish = matchRecipe(plate);
+        if (carry?.kind === "ingredient" && existingDish) {
+          return { text: `这盘${existingDish.name}已经做好了`, tone: "idle" };
+        }
+        if (carry?.kind === "ingredient") {
+          const item = carry.item;
+          const meta = INGREDIENT_META[item.id];
+          if (!isPlateReady(item)) {
+            return {
+              text: item.id === "meat" ? "肉饼要先煎熟" : "食材要先切碎",
+              tone: "no",
+            };
+          }
+          if (!canAddToPlate(plate, item)) {
+            return { text: "这个盘子装不下它了", tone: "no" };
+          }
+          return { text: `把${meta.name}放到装盘台上`, tone: "do" };
+        }
+        if (plate.length === 0) {
+          return { text: "拿一个干净盘子，或把准备好的食材放上来", tone: "do" };
+        }
+        const dish = matchRecipe(plate);
+        return {
+          text: dish ? `端起做好的${dish.name}` : "端起这盘食材，继续装盘",
+          tone: "do",
+        };
       }
       case "serve": {
         if (carry?.kind !== "plate") {

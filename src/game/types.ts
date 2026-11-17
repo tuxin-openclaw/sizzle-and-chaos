@@ -16,7 +16,7 @@ export type StationType =
   | "crate"
   | "chop"
   | "stove"
-  | "plate"
+  | "plating"
   | "serve"
   | "sink";
 

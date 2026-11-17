@@ -60,7 +60,7 @@ export function CountdownOverlay({ hud }: { hud: GameHud }) {
         {count}
       </div>
       <div className="countdown-flow">
-        <span><b>1</b><PlateIcon size={24} />拿盘子</span>
+        <span><b>1</b><PlateIcon size={24} />装盘台拿盘</span>
         <i>→</i>
         <span><b>2</b><IngredientIcon id="lettuce" size={24} />备料切菜</span>
         <i>→</i>
@@ -70,7 +70,7 @@ export function CountdownOverlay({ hud }: { hud: GameHud }) {
       </div>
       <div className="countdown-note">
         {hud.playerCount === 1
-          ? "一个人也要稳住节奏：先拿盘，再备料。"
+          ? "一个人也要稳住节奏：先到装盘台拿盘，再备料。"
           : "别抢同一个砧板，分工才是双人厨房的真谛。"}
       </div>
     </div>
@@ -343,11 +343,12 @@ export function HelpModal({ onClose }: { onClose: () => void }) {
           <section>
             <h3><span>02</span>一条出餐流水线</h3>
             <ol className="help-steps">
-              <li><PlateIcon size={24} /><span><b>拿盘子</b> 盘子架旁按动作键。</span></li>
+              <li><PlateIcon size={24} /><span><b>装盘台</b> 到标着「装盘台 / PLATING STATION」的红色柜台，台上有盘子。</span></li>
               <li><IngredientIcon id="lettuce" size={24} /><span><b>取食材</b> 货箱里拿生菜、番茄、面包或肉饼。</span></li>
               <li><ChefHatIcon size={24} /><span><b>切菜</b> 放到砧板上，<b>按住</b>动作键切碎。</span></li>
-              <li><FlameIcon size={24} /><span><b>煎肉</b> 切好的肉饼下锅，煎好及时拿起或装盘。</span></li>
-              <li><CoinIcon size={24} /><span><b>出餐</b> 端着完整的盘子到 ORDER UP 窗口送出。</span></li>
+              <li><FlameIcon size={24} /><span><b>煎肉</b> 切好的肉饼下锅，煎好及时拿起。</span></li>
+              <li><PlateIcon size={24} /><span><b>装盘</b> 把准备好的食材拿到装盘台按互动键放上盘子；也可以空手拿盘，再去砧板/锅里收集。</span></li>
+              <li><CoinIcon size={24} /><span><b>出餐</b> 端起完整盘子到 ORDER UP 窗口送出。</span></li>
             </ol>
           </section>
           <section>
@@ -355,7 +356,7 @@ export function HelpModal({ onClose }: { onClose: () => void }) {
             <p>
               上方票据显示配方。经典汉堡需要面包 + 煎肉饼 + 切碎生菜；
               田园沙拉需要切碎生菜 + 切碎番茄；豪华汉堡再加一份切碎番茄。
-              盘子里的东西必须和订单完全一致。
+              盘子里的东西必须和订单完全一致。找不到装盘处时，认准头顶有「装盘台」木牌的柜台。
             </p>
             <div className="help-recipes">
               {Object.values(RECIPES).map((recipe) => (

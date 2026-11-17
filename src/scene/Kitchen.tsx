@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import * as THREE from "three";
-import { Sparkles } from "@react-three/drei";
+import { Billboard, Sparkles } from "@react-three/drei";
 import { game } from "../game/engine";
 import type { DecorItem, Theme } from "../game/types";
 import { useGameVersion } from "../game/useGameHooks";
-import { FoodModel, FoodVisual, PropModel, StationModel } from "./models";
+import { FoodVisual, PlateWithContents, PropModel, StationModel } from "./models";
 import {
   ChopBits,
   ChopKnife,
@@ -17,6 +17,7 @@ import {
   makeChalkboardTexture,
   makeClockTexture,
   makeFloorTexture,
+  makePlatingSignTexture,
   makePosterTexture,
   makeRugTexture,
   makeServeSignTexture,
@@ -29,7 +30,7 @@ const STATION_MODEL: Record<StationType, string> = {
   crate: "Counter",
   chop: "ChopStation",
   stove: "StoveStation",
-  plate: "PlateStation",
+  plating: "PlateStation",
   serve: "ServeStation",
   sink: "SinkStation",
 };
@@ -388,23 +389,6 @@ function CrateDisplay({ ingredient }: { ingredient: Ingredient["id"] }) {
   );
 }
 
-function PlateStack() {
-  return (
-    <group position={[0, 1.05, 0]}>
-      {Array.from({ length: 5 }).map((_, index) => (
-        <group
-          key={index}
-          position={[0, index * 0.045, 0]}
-          rotation={[0, index * 0.35, 0]}
-          scale={0.94}
-        >
-          <FoodModel name="plate" />
-        </group>
-      ))}
-    </group>
-  );
-}
-
 function ServeDetails() {
   const sign = useMemo(() => makeServeSignTexture(), []);
   return (
@@ -414,6 +398,23 @@ function ServeDetails() {
         <meshBasicMaterial map={sign} transparent toneMapped={false} depthWrite={false} />
       </mesh>
     </group>
+  );
+}
+
+function PlatingSign() {
+  const texture = useMemo(() => makePlatingSignTexture(), []);
+  return (
+    <Billboard position={[0, 2.55, 0]} renderOrder={3}>
+      <mesh>
+        <planeGeometry args={[1.85, 0.63]} />
+        <meshBasicMaterial
+          map={texture}
+          transparent
+          toneMapped={false}
+          depthWrite={false}
+        />
+      </mesh>
+    </Billboard>
   );
 }
 
@@ -464,7 +465,14 @@ function BlockView({
           <StationProgress stationId={block.id} kind="stove" />
         </>
       ) : null}
-      {block.station?.type === "plate" ? <PlateStack /> : null}
+      {block.station?.type === "plating" ? (
+        <>
+          <group position={[0, 1.05, 0]} scale={0.95}>
+            <PlateWithContents contents={station?.plateContents ?? []} />
+          </group>
+          <PlatingSign />
+        </>
+      ) : null}
       {block.station?.type === "serve" ? <ServeDetails /> : null}
     </group>
   );

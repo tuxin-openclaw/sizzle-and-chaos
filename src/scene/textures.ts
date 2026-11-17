@@ -444,3 +444,74 @@ export function makeFlameTexture() {
   ctx.globalCompositeOperation = "source-over";
   return finish(canvas);
 }
+
+export function makePlatingSignTexture() {
+  const { canvas, ctx } = baseCanvas(760, 260);
+  ctx.clearRect(0, 0, 760, 260);
+  // wooden plaque
+  ctx.fillStyle = "#8A5634";
+  ctx.beginPath();
+  ctx.roundRect(6, 10, 748, 238, 30);
+  ctx.fill();
+  ctx.strokeStyle = "#3B2A23";
+  ctx.lineWidth = 10;
+  ctx.stroke();
+  // cream face
+  ctx.fillStyle = "#FFF4DE";
+  ctx.beginPath();
+  ctx.roundRect(28, 32, 704, 194, 20);
+  ctx.fill();
+  ctx.strokeStyle = "#3B2A23";
+  ctx.lineWidth = 6;
+  ctx.stroke();
+  // inner dashed border
+  ctx.setLineDash([12, 9]);
+  ctx.strokeStyle = "rgba(59,42,35,.32)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.roundRect(44, 48, 672, 162, 14);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // plate icon
+  ctx.fillStyle = "#FFFDF5";
+  ctx.strokeStyle = "#3B2A23";
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.ellipse(110, 148, 46, 29, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#8CC653";
+  ctx.beginPath();
+  ctx.arc(100, 140, 11, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#E4543E";
+  ctx.beginPath();
+  ctx.arc(124, 150, 9, 0, Math.PI * 2);
+  ctx.fill();
+  // text
+  ctx.fillStyle = "#E85A45";
+  ctx.font = "700 82px 'Fredoka', 'PingFang SC', sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("装盘台", 400, 116);
+  ctx.fillStyle = "#2F817A";
+  ctx.font = "700 30px 'Fredoka', sans-serif";
+  ctx.letterSpacing = "4px";
+  ctx.fillText("PLATING STATION", 400, 184);
+  // brass screws
+  for (const [x, y] of [
+    [34, 40],
+    [726, 40],
+    [34, 220],
+    [726, 220],
+  ]) {
+    ctx.fillStyle = "#D9A441";
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#3B2A23";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  }
+  return finish(canvas);
+}

@@ -133,6 +133,13 @@ export function canAddToPlate(contents: Ingredient[], item: Ingredient): boolean
   return true;
 }
 
+/** Only prepared food may go on a plate. */
+export function isPlateReady(item: Ingredient): boolean {
+  if (item.id === "bun") return true;
+  if (item.id === "meat") return item.state === "cooked";
+  return item.state === "chopped";
+}
+
 const DAY_THEME = {
   floorA: "#F4E3C1",
   floorB: "#DFC097",
@@ -173,7 +180,7 @@ export const LEVELS: LevelDef[] = [
       { id: "b3", x: -2.7, z: -3.95, station: { type: "crate", ingredient: "lettuce" } },
       { id: "b4", x: -0.9, z: -3.95, station: { type: "crate", ingredient: "tomato" } },
       { id: "b5", x: 0.9, z: -3.95 },
-      { id: "b6", x: 2.7, z: -3.95, station: { type: "plate" } },
+      { id: "b6", x: 2.7, z: -3.95, station: { type: "plating" } },
       { id: "b7", x: 4.5, z: -3.95, station: { type: "serve" } },
       { id: "b8", x: 6.3, z: -3.95, station: { type: "sink" } },
       { id: "i1", x: -2.7, z: 0.45, station: { type: "chop" } },
@@ -217,14 +224,14 @@ export const LEVELS: LevelDef[] = [
       { id: "c2", x: -3.6, z: -3.8, station: { type: "crate", ingredient: "meat" } },
       { id: "c3", x: -1.8, z: -3.8, station: { type: "crate", ingredient: "lettuce" } },
       { id: "c4", x: 0, z: -3.8, station: { type: "crate", ingredient: "tomato" } },
-      { id: "c5", x: 1.8, z: -3.8, station: { type: "plate" } },
+      { id: "c5", x: 1.8, z: -3.8, station: { type: "plating" } },
       { id: "c6", x: 3.6, z: -3.8, station: { type: "serve" } },
       { id: "c7", x: 5.4, z: -3.8, station: { type: "sink" } },
       { id: "i1", x: -3.6, z: 0.55, station: { type: "chop" } },
       { id: "i2", x: -1.8, z: 0.55, station: { type: "stove" } },
       { id: "i3", x: 0, z: 0.55, station: { type: "stove" } },
       { id: "i4", x: 1.8, z: 0.55, station: { type: "chop" } },
-      { id: "r1", x: 4.9, z: 1.2, rot: Math.PI / 2, station: { type: "plate" } },
+      { id: "r1", x: 4.9, z: 1.2, rot: Math.PI / 2 },
       { id: "r2", x: 4.9, z: 2.9, rot: Math.PI / 2, station: { type: "stove" } },
       { id: "r3", x: -6.6, z: 1.9, rot: Math.PI / 2 },
     ],
@@ -237,6 +244,7 @@ export const LEVELS: LevelDef[] = [
       { type: "pot", x: -6.6, z: 1.9, scale: 0.75 },
       { type: "stool", x: -3.3, z: 4.85, scale: 0.92 },
       { type: "stool", x: 1.4, z: 4.8, scale: 0.92 },
+      { type: "jar", x: 4.9, z: 1.2, scale: 0.9 },
     ],
     spawns: [
       { x: -5.2, z: 3.3 },
@@ -281,14 +289,14 @@ export const LEVELS: LevelDef[] = [
       { id: "m2", x: -3.6, z: -3.8, station: { type: "crate", ingredient: "meat" } },
       { id: "m3", x: -1.8, z: -3.8, station: { type: "crate", ingredient: "lettuce" } },
       { id: "m4", x: 0, z: -3.8, station: { type: "crate", ingredient: "tomato" } },
-      { id: "m5", x: 1.8, z: -3.8, station: { type: "plate" } },
+      { id: "m5", x: 1.8, z: -3.8, station: { type: "plating" } },
       { id: "m6", x: 3.6, z: -3.8, station: { type: "serve" } },
       { id: "m7", x: 5.4, z: -3.8, station: { type: "chop" } },
       { id: "i1", x: -2.7, z: 0.55, station: { type: "chop" } },
       { id: "i2", x: -0.9, z: 0.55, station: { type: "stove" } },
       { id: "i3", x: 0.9, z: 0.55, station: { type: "stove" } },
       { id: "i4", x: 2.7, z: 0.55, station: { type: "chop" } },
-      { id: "l1", x: -6.6, z: -1.05, rot: Math.PI / 2, station: { type: "plate" } },
+      { id: "l1", x: -6.6, z: -1.05, rot: Math.PI / 2 },
       { id: "l2", x: -6.6, z: 0.85, rot: Math.PI / 2, station: { type: "chop" } },
       { id: "l3", x: -6.6, z: 2.7, rot: Math.PI / 2, station: { type: "stove" } },
       { id: "f1", x: -0.9, z: 2.85 },
@@ -302,6 +310,7 @@ export const LEVELS: LevelDef[] = [
       { type: "extinguisher", x: -8.0, z: 3.8 },
       { type: "pot", x: 3.6, z: -4.55, scale: 0.8 },
       { type: "jar", x: 0, z: 2.85, scale: 0.95 },
+      { type: "jar", x: -6.6, z: -1.05, scale: 0.9 },
     ],
     spawns: [
       { x: -4.4, z: 3.8 },
