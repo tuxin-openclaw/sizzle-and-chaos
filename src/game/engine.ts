@@ -653,6 +653,26 @@ export class GameEngine {
       };
       audio.play("place");
       this.bump();
+      return;
+    }
+
+    if (player.carry.kind === "ingredient") {
+      const held = player.carry.item;
+      const meta = INGREDIENT_META[ingredient];
+      if (held.id === ingredient && held.state === "raw") {
+        player.carry = null;
+        audio.play("place");
+        this.showToast(`把${meta.name}放回货箱`, "info");
+        this.bump();
+        return;
+      }
+      if (held.id === ingredient) {
+        this.showToast("加工过的食材放不回货箱，先放在空砧板上吧", "warn");
+        audio.play("error");
+        return;
+      }
+      this.showToast(`这里是${meta.name}货箱，${INGREDIENT_META[held.id].name}要放回它自己的货箱`, "warn");
+      audio.play("error");
     }
   }
 
@@ -1154,7 +1174,13 @@ export class GameEngine {
           }
           return { text: `生${meta.name}要先切碎`, tone: "no" };
         }
-        return { text: "手里腾不出地方", tone: "no" };
+        if (carry.kind === "ingredient" && carry.item.id === ingredient) {
+          if (carry.item.state === "raw") {
+            return { text: `把${meta.name}放回货箱`, tone: "do" };
+          }
+          return { text: "加工过的食材放不回货箱", tone: "no" };
+        }
+        return { text: "这不是这个货箱的食材", tone: "no" };
       }
       case "chop": {
         if (station.item) {
